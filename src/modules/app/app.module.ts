@@ -16,7 +16,6 @@ import { cacheConfig } from "../../configs/cache.config";
 import { CacheModule } from "@nestjs/cache-manager";
 import helmet from "helmet";
 import * as cookieParser from "cookie-parser";
-import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middleware";
 import { AwsSdkModule } from "nest-aws-sdk";
 import { awsSdkConfig } from "../../configs/awsSdk.config";
 
@@ -39,7 +38,5 @@ export class AppModule implements NestModule {
     consumer
       .apply(helmet(), cookieParser())
       .forRoutes({ path: "*", method: RequestMethod.ALL })
-      .apply(BasicAuthMiddleware)
-      .forRoutes({ path: "api/swagger", method: RequestMethod.GET });
   }
 }

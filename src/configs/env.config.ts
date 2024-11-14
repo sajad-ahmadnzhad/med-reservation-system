@@ -18,6 +18,10 @@ export default (): ConfigModuleOptions => {
         REDIS_PORT: Joi.number().required(),
         BASIC_AUTH_USERNAME: Joi.string().required(),
         BASIC_AUTH_PASSWORD: Joi.string().required(),
+        S3_SECRET_KEY: Joi.string().required(),
+        S3_ACCESS_KEY: Joi.string().required(),
+        S3_BUCKET_NAME: Joi.string().required(),
+        S3_ENDPOINT: Joi.string().required(),
       }).unknown(true);
 
       const { error, value } = schema.validate(config);
