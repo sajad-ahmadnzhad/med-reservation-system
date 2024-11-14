@@ -1,4 +1,9 @@
-import { Module, ValidationPipe } from "@nestjs/common";
+import {
+  MiddlewareConsumer,
+  Module,
+  RequestMethod,
+  ValidationPipe,
+} from "@nestjs/common";
 import { DoctorsModule } from "../doctors/doctors.module";
 import { ConfigModule } from "@nestjs/config";
 import envConfig from "../../configs/env.config";
@@ -8,6 +13,8 @@ import { APP_PIPE, APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { cacheConfig } from "../../configs/cache.config";
 import { CacheModule } from "@nestjs/cache-manager";
+import helmet from "helmet";
+import * as cookieParser from "cookie-parser";
 
 @Module({
   imports: [
@@ -22,4 +29,10 @@ import { CacheModule } from "@nestjs/cache-manager";
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(helmet(), cookieParser())
+      .forRoutes({ path: "*", method: RequestMethod.ALL });
+  }
+}
