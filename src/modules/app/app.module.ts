@@ -6,6 +6,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { typeormConfig } from "../../configs/typeorm.config";
 import { APP_PIPE, APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { cacheConfig } from "../../configs/cache.config";
+import { CacheModule } from "@nestjs/cache-manager";
 
 @Module({
   imports: [
@@ -13,6 +15,7 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
     ThrottlerModule.forRoot([{ ttl: 60_000, limit: 10 }]),
     ConfigModule.forRoot(envConfig()),
     TypeOrmModule.forRoot(typeormConfig()),
+    CacheModule.registerAsync(cacheConfig()),
   ],
   providers: [
     { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) },
