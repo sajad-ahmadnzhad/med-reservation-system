@@ -14,8 +14,10 @@ export default (): ConfigModuleOptions => {
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
         DB_SYNCHRONIZE: Joi.number().allow(0, 1).required(),
-        REDIS_HOST: Joi.string().uri().required(),
+        REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
+        BASIC_AUTH_USERNAME: Joi.string().required(),
+        BASIC_AUTH_PASSWORD: Joi.string().required(),
       }).unknown(true);
 
       const { error, value } = schema.validate(config);

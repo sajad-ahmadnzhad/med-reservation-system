@@ -3,6 +3,7 @@ import {
   Module,
   RequestMethod,
   ValidationPipe,
+  NestModule
 } from "@nestjs/common";
 import { DoctorsModule } from "../doctors/doctors.module";
 import { ConfigModule } from "@nestjs/config";
@@ -15,6 +16,7 @@ import { cacheConfig } from "../../configs/cache.config";
 import { CacheModule } from "@nestjs/cache-manager";
 import helmet from "helmet";
 import * as cookieParser from "cookie-parser";
+import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middleware";
 
 @Module({
   imports: [
@@ -29,10 +31,12 @@ import * as cookieParser from "cookie-parser";
     { provide: APP_GUARD, useClass: ThrottlerGuard },
   ],
 })
-export class AppModule {
-  constructor(consumer: MiddlewareConsumer) {
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(helmet(), cookieParser())
-      .forRoutes({ path: "*", method: RequestMethod.ALL });
+      .forRoutes({ path: "*", method: RequestMethod.ALL })
+      .apply(BasicAuthMiddleware)
+      .forRoutes({ path: "swagger", method: RequestMethod.GET });
   }
 }
