@@ -3,7 +3,7 @@ import {
   Module,
   RequestMethod,
   ValidationPipe,
-  NestModule
+  NestModule,
 } from "@nestjs/common";
 import { DoctorsModule } from "../doctors/doctors.module";
 import { ConfigModule } from "@nestjs/config";
@@ -17,6 +17,8 @@ import { CacheModule } from "@nestjs/cache-manager";
 import helmet from "helmet";
 import * as cookieParser from "cookie-parser";
 import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middleware";
+import { AwsSdkModule } from "nest-aws-sdk";
+import { awsSdkConfig } from "../../configs/awsSdk.config";
 
 @Module({
   imports: [
@@ -25,6 +27,7 @@ import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middlewa
     ConfigModule.forRoot(envConfig()),
     TypeOrmModule.forRoot(typeormConfig()),
     CacheModule.registerAsync(cacheConfig()),
+    AwsSdkModule.forRoot(awsSdkConfig()),
   ],
   providers: [
     { provide: APP_PIPE, useValue: new ValidationPipe({ whitelist: true }) },
@@ -37,6 +40,6 @@ export class AppModule implements NestModule {
       .apply(helmet(), cookieParser())
       .forRoutes({ path: "*", method: RequestMethod.ALL })
       .apply(BasicAuthMiddleware)
-      .forRoutes({ path: "swagger", method: RequestMethod.GET });
+      .forRoutes({ path: "api/swagger", method: RequestMethod.GET });
   }
 }
