@@ -10,7 +10,12 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main"
+    "start:prod": "node dist/main", 
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "migration:run": "npm run typeorm migration:run -- -d ./dist/config/typeorm.js",
+    "migration:revert": "npm run typeorm -- -d ./dist/config/typeorm.js migration:revert",
+    "migration:generate": "ts-node ./src/migrations/scripts/generate-migration.script.ts",
+    "migration:create": "ts-node src/migrations/scripts/create-migration.script.ts"
   },
   "dependencies": {
     "@nestjs/cache-manager": "^2.3.0",
