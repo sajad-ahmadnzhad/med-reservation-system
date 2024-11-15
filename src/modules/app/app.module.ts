@@ -19,7 +19,7 @@ import graphqlConfig from "../../configs/graphql.config";
 import { ApolloDriverConfig } from "@nestjs/apollo";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthModule } from "../auth/auth.module";
-import { BasicAuthMiddleware } from "../../common/basicAuth.middleware";
+import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middleware";
 
 @Module({
   imports: [
