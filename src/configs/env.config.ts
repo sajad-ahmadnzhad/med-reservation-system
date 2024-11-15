@@ -22,6 +22,7 @@ export default (): ConfigModuleOptions => {
         S3_ACCESS_KEY: Joi.string().required(),
         S3_BUCKET_NAME: Joi.string().required(),
         S3_ENDPOINT: Joi.string().required(),
+        ALLOWED_ORIGINS: Joi.string().default([]),
       }).unknown(true);
 
       const { error, value } = schema.validate(config);

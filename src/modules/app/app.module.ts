@@ -19,6 +19,7 @@ import graphqlConfig from "../../configs/graphql.config";
 import { ApolloDriverConfig } from "@nestjs/apollo";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthModule } from "../auth/auth.module";
+import { BasicAuthMiddleware } from "../../common/basicAuth.middleware";
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { AuthModule } from "../auth/auth.module";
     CacheModule.registerAsync(cacheConfig()),
     AwsSdkModule.forRoot(awsSdkConfig()),
     GraphQLModule.forRoot<ApolloDriverConfig>(graphqlConfig()),
-    AuthModule
+    AuthModule,
   ],
   providers: [
     {
@@ -41,6 +42,8 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(cookieParser())
-      .forRoutes({ path: "*", method: RequestMethod.ALL });
+      .forRoutes({ path: "*", method: RequestMethod.ALL })
+      .apply(BasicAuthMiddleware)
+      .forRoutes({ path: "graphql", method: RequestMethod.GET });
   }
 }
