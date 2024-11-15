@@ -11,7 +11,6 @@ import { typeormConfig } from "../../configs/typeorm.config";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { cacheConfig } from "../../configs/cache.config";
 import { CacheModule } from "@nestjs/cache-manager";
-import helmet from "helmet";
 import * as cookieParser from "cookie-parser";
 import { AwsSdkModule } from "nest-aws-sdk";
 import { awsSdkConfig } from "../../configs/awsSdk.config";
@@ -41,7 +40,7 @@ import { AuthModule } from "../auth/auth.module";
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(helmet(), cookieParser())
+      .apply(cookieParser())
       .forRoutes({ path: "*", method: RequestMethod.ALL });
   }
 }
