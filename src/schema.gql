@@ -3,7 +3,6 @@
 # ------------------------------------------------------
 
 type Auth {
-  """Example field (placeholder)"""
   exampleField: Int!
 }
 
