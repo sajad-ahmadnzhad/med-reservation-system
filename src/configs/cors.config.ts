@@ -8,5 +8,7 @@ export default (): CorsOptions => {
     origin: ALLOWED_ORIGINS,
     methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
     credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
   };
 };
