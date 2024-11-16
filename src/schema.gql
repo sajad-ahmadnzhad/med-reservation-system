@@ -2,18 +2,22 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Auth {
-  exampleField: Int!
+type User {
+  full_name: String!
+  email: String!
+  phone_number: String!
+  role: String!
+  avatar_url: String!
 }
 
 type Query {
-  auth(id: Int!): Auth!
+  user(id: Int!): User!
 }
 
 type Mutation {
-  createAuth(createAuthInput: CreateAuthInput!): Auth!
-  updateAuth(updateAuthInput: UpdateAuthInput!): Auth!
-  removeAuth(id: Int!): Auth!
+  createAuth(createAuthInput: CreateAuthInput!): User!
+  updateAuth(updateAuthInput: UpdateAuthInput!): User!
+  removeAuth(id: Int!): User!
 }
 
 input CreateAuthInput {
