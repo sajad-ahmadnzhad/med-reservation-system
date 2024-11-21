@@ -11,7 +11,7 @@ export const typeormConfig = (): TypeOrmModuleOptions => {
     DB_SYNCHRONIZE,
   } = process.env;
   return {
-    type: "mysql",
+    type: "postgres",
     host: DB_HOST,
     port: Number(DB_PORT),
     username: DB_USERNAME,

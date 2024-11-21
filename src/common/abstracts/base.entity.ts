@@ -9,10 +9,10 @@ export class BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: "time", default: () => "CURRENT_TIMESTAMP" })
   createdAt: Date;
 
-  @Column({ type: "datetime", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: "time", default: () => "CURRENT_TIMESTAMP" })
   updatedAt: Date;
 
   @BeforeInsert()
