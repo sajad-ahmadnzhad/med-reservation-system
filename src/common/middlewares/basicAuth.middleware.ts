@@ -8,7 +8,7 @@ export class BasicAuthMiddleware implements NestMiddleware {
     const { BASIC_AUTH_USERNAME, BASIC_AUTH_PASSWORD } = process.env;
 
     basicAuth({
-      users: { [BASIC_AUTH_USERNAME]: BASIC_AUTH_PASSWORD },
+      users: { [BASIC_AUTH_USERNAME as string]: BASIC_AUTH_PASSWORD as string },
       challenge: true,
     })(req, res, next);
   }

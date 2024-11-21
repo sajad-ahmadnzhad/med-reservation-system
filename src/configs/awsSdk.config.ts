@@ -14,8 +14,8 @@ export const awsSdkConfig = (): {
     defaultServiceOptions: {
       region: "default",
       credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY,
-        secretAccessKey: process.env.S3_SECRET_KEY,
+        accessKeyId: process.env.S3_ACCESS_KEY as string,
+        secretAccessKey: process.env.S3_SECRET_KEY as string,
       },
       endpoint: process.env.S3_ENDPOINT,
     },

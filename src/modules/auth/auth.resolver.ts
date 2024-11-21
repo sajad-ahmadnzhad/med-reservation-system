@@ -1,35 +1,49 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
-import { User } from './entities/user.entity';
-import { CreateAuthInput } from './dto/create-auth.input';
-import { UpdateAuthInput } from './dto/update-auth.input';
+import { Resolver, Mutation, Args, Query } from "@nestjs/graphql";
+import { AuthService } from "./auth.service";
+import { User } from "./entities/user.entity";
+import { SignupUserArgs } from "./args/signup-user.args";
+import { SignupUserSchema } from "./schema/signup-user.schema";
+import { SigninUserSchema } from "./schema/signin-user.schema";
+import {
+  SigninUserByPhoneArgs,
+  SigninUserByEmailArgs,
+} from "./args/signin-user.args";
+import { RefreshTokenArgs } from "./args/refresh-token.args";
+import { RefreshTokenSchema } from "./schema/refresh-token.schema";
+import { SignoutUserSchema } from "./schema/signout-user.schema";
+import { SignoutUserArgs } from "./args/signout-user.args";
 
 @Resolver(() => User)
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => User)
-  createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
-    return this.authService.create(createAuthInput);
-  }
-
-  @Query(() => [User], { name: 'user' })
+  @Query(() => User)
   findAll() {
     return this.authService.findAll();
   }
 
-  @Query(() => User, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.findOne(id);
+  @Mutation(() => SignupUserSchema)
+  signup(@Args("signupInput") signupInput: SignupUserArgs) {
+    return this.authService.signupUser(signupInput);
   }
 
-  @Mutation(() => User)
-  updateAuth(@Args('updateAuthInput') updateAuthInput: UpdateAuthInput) {
-    return this.authService.update(updateAuthInput.id, updateAuthInput);
+  @Mutation(() => SigninUserSchema)
+  signinByPhone(@Args("signinInput") signinInput: SigninUserByPhoneArgs) {
+    return this.authService.signinByPhone(signinInput);
   }
 
-  @Mutation(() => User)
-  removeAuth(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.remove(id);
+  @Mutation(() => SigninUserSchema)
+  signinByEmail(@Args("signinInput") signinInput: SigninUserByEmailArgs) {
+    return this.authService.signinByEmail(signinInput);
+  }
+
+  @Mutation(() => RefreshTokenSchema)
+  refreshToken(@Args("refreshTokenInput") refreshTokenInput: RefreshTokenArgs) {
+    return this.authService.refreshToken(refreshTokenInput.refreshToken);
+  }
+
+  @Mutation(() => SignoutUserSchema)
+  signout(@Args("signoutInput") signoutInput: SignoutUserArgs) {
+    return this.authService.signout(signoutInput);
   }
 }

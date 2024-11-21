@@ -23,6 +23,10 @@ export default (): ConfigModuleOptions => {
         S3_BUCKET_NAME: Joi.string().required(),
         S3_ENDPOINT: Joi.string().required(),
         ALLOWED_ORIGINS: Joi.string().default([]),
+        ACCESS_TOKEN_SECRET: Joi.string().required(),
+        REFRESH_TOKEN_SECRET: Joi.string().required(),
+        ACCESS_TOKEN_EXPIRE_TIME: Joi.string().required(),
+        REFRESH_TOKEN_EXPIRE_TIME: Joi.string().required(),
       }).unknown(true);
 
       const { error, value } = schema.validate(config);

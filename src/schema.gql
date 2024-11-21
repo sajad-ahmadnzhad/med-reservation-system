@@ -10,23 +10,56 @@ type User {
   avatar_url: String!
 }
 
+type SignupUserSchema {
+  accessToken: String!
+  refreshToken: String!
+  message: String!
+}
+
+type SigninUserSchema {
+  accessToken: String!
+  refreshToken: String!
+  message: String!
+}
+
+type RefreshTokenSchema {
+  newAccessToken: String!
+  message: String!
+}
+
+type SignoutUserSchema {
+  message: String!
+}
+
 type Query {
-  user(id: Int!): User!
+  findAll: User!
 }
 
 type Mutation {
-  createAuth(createAuthInput: CreateAuthInput!): User!
-  updateAuth(updateAuthInput: UpdateAuthInput!): User!
-  removeAuth(id: Int!): User!
+  signup(signupInput: SignupUserArgs!): SignupUserSchema!
+  signinByPhone(signinInput: SigninUserByPhoneArgs!): SigninUserSchema!
+  signinByEmail(signinInput: SigninUserByEmailArgs!): SigninUserSchema!
+  refreshToken(refreshTokenInput: RefreshTokenArgs!): RefreshTokenSchema!
+  signout(signoutInput: SignoutUserArgs!): SignoutUserSchema!
 }
 
-input CreateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input SignupUserArgs {
+  phone_number: String!
 }
 
-input UpdateAuthInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
+input SigninUserByPhoneArgs {
+  phone_number: String!
+}
+
+input SigninUserByEmailArgs {
+  email: String!
+  password: String!
+}
+
+input RefreshTokenArgs {
+  refreshToken: String!
+}
+
+input SignoutUserArgs {
+  refreshToken: String!
 }

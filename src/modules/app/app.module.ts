@@ -3,6 +3,7 @@ import {
   Module,
   RequestMethod,
   NestModule,
+  ValidationPipe,
 } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import envConfig from "../../configs/env.config";
@@ -18,6 +19,7 @@ import graphqlConfig from "../../configs/graphql.config";
 import { ApolloDriverConfig } from "@nestjs/apollo";
 import { AuthModule } from "../auth/auth.module";
 import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middleware";
+import { APP_PIPE } from "@nestjs/core";
 
 @Module({
   imports: [
@@ -27,7 +29,13 @@ import { BasicAuthMiddleware } from "../../common/middlewares/basicAuth.middlewa
     AwsSdkModule.forRoot(awsSdkConfig()),
     GraphQLModule.forRoot<ApolloDriverConfig>(graphqlConfig()),
     AuthModule,
-  ]
+  ],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ whitelist: true }),
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
