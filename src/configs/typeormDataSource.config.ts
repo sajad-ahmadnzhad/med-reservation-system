@@ -1,11 +1,7 @@
 import { DataSource } from "typeorm";
-// import { config } from "dotenv";
-import * as path from "path";
-
-// config({ path: path.join(process.cwd() + `/.env.${process.env.NODE_ENV}`) });
 
 export default new DataSource({
-  type: "mysql",
+  type: "postgres",
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   username: process.env.DB_USERNAME,
