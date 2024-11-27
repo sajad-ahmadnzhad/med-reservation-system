@@ -28,17 +28,18 @@ import {
   SigninUserByEmailArgs,
   SigninUserByPhoneArgs,
 } from "./args/signin-user.args";
+import { UserRepository } from "./auth.repository";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
-    @Inject(CACHE_MANAGER) private readonly redisCache: RedisCache
+    @Inject(CACHE_MANAGER) private readonly redisCache: RedisCache,
+    private readonly userRepository: UserRepository
   ) {}
 
   findAll() {
-    return this.userRepository.find();
+    return [];
   }
 
   private async validateRefreshToken(refreshToken: string): Promise<boolean> {
@@ -78,7 +79,7 @@ export class AuthService {
   async signupUser(input: SignupUserArgs): Promise<SignupUser> {
     const { phone_number } = input;
 
-    const existingUser = await this.userRepository.findOneBy({ phone_number });
+    const existingUser = await this.userRepository.findByPhone(phone_number);
 
     if (existingUser) {
       throw new ConflictException(AuthMessages.AlreadyRegistered);
@@ -86,16 +87,14 @@ export class AuthService {
 
     const isFirstUser = (await this.userRepository.count()) == 0;
 
-    let user = this.userRepository.create({
+    let user = await this.userRepository.createUser({
       full_name: `${Math.random() * 100000}`,
       phone_number,
       role: isFirstUser ? Roles.SUPER_ADMIN : Roles.USER,
     });
 
-    user = await this.userRepository.save(user);
-
     const tokens = await this.generateTokens(user);
-
+    console.log(user, tokens);
     return { success: AuthMessages.SignupUserSuccess, ...tokens };
   }
 
@@ -164,13 +163,15 @@ export class AuthService {
       throw new UnauthorizedException(AuthMessages.GoogleUnauthorized);
     }
 
-    let existingUser = await this.userRepository.findOneBy({
-      email: user.email,
-    });
+    let existingUser = await this.userRepository.findByEmail(user.email);
+
+    const isFirstUser = (await this.userRepository.count()) == 0;
 
     if (!existingUser) {
-      const newUser = this.userRepository.create(user);
-      existingUser = await this.userRepository.save(newUser);
+      existingUser= await this.userRepository.createUser({
+        ...user,
+        role: isFirstUser ? Roles.SUPER_ADMIN : Roles.USER,
+      });
     }
 
     const tokens = await this.generateTokens(existingUser);
@@ -181,9 +182,10 @@ export class AuthService {
     };
   }
 
-  async signout(signoutUserArgs: SignoutUserArgs): Promise<{ message: string }> {
-
-    const {refreshToken} = signoutUserArgs
+  async signout(
+    signoutUserArgs: SignoutUserArgs
+  ): Promise<{ message: string }> {
+    const { refreshToken } = signoutUserArgs;
 
     let decodeToken: Partial<{ id: number }> = {};
 
@@ -204,4 +206,3 @@ export class AuthService {
     return { message: AuthMessages.SignoutSuccess };
   }
 }
-
