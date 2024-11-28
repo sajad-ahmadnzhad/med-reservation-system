@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@apollo/server": "^4.11.2",
+    "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/apollo": "^12.2.1",
     "@nestjs/cache-manager": "^2.3.0",
     "@nestjs/common": "^10.0.0",

@@ -33,4 +33,7 @@ export class User extends BaseEntity {
 
   @Column({ type: "boolean", default: false })
   is_verified_email: boolean;
+
+  @Column({ type: "varchar", nullable: true })
+  token: string;
 }
