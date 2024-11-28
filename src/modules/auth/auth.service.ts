@@ -18,6 +18,7 @@ import {
   GenerateTokens,
   GoogleOAuthUser,
   RefreshToken,
+  SigninUser,
   SignupUser,
 } from "./interfaces/auth.interface";
 import { AuthMessages } from "../../common/enums/authMessages.enum";
@@ -113,10 +114,10 @@ export class AuthService {
 
     const tokens = await this.generateTokens(user);
 
-    return { success: AuthMessages.SignupUserSuccess, ...tokens };
+    return { message: AuthMessages.SignupUserSuccess, ...tokens };
   }
 
-  async signinByPhone(input: SigninUserByPhoneArgs) {
+  async signinByPhone(input: SigninUserByPhoneArgs): Promise<SigninUser> {
     const { phone_number } = input;
 
     const user = await this.userRepository.findOneBy({ phone_number });
@@ -127,10 +128,10 @@ export class AuthService {
 
     const tokens = await this.generateTokens(user);
 
-    return { success: AuthMessages.SigninUserSuccess, ...tokens };
+    return { message: AuthMessages.SigninUserSuccess, ...tokens };
   }
 
-  async signinByEmail(input: SigninUserByEmailArgs) {
+  async signinByEmail(input: SigninUserByEmailArgs): Promise<SigninUser> {
     const { email, password } = input;
 
     const user = await this.userRepository.findOne({
@@ -150,7 +151,7 @@ export class AuthService {
 
     const tokens = await this.generateTokens(user);
 
-    return { success: AuthMessages.SigninUserSuccess, ...tokens };
+    return { message: AuthMessages.SigninUserSuccess, ...tokens };
   }
 
   async refreshToken(refreshToken: string): Promise<RefreshToken> {
@@ -170,13 +171,13 @@ export class AuthService {
 
     return {
       newAccessToken,
-      success: AuthMessages.RefreshTokenSuccess,
+      message: AuthMessages.RefreshTokenSuccess,
     };
   }
 
   async googleAuth(
     user: GoogleOAuthUser | undefined
-  ): Promise<GenerateTokens & { success: string }> {
+  ): Promise<GenerateTokens & { message: string }> {
     if (!user) {
       throw new UnauthorizedException(AuthMessages.GoogleUnauthorized);
     }
@@ -196,7 +197,7 @@ export class AuthService {
 
     return {
       ...tokens,
-      success: AuthMessages.AuthenticatedSuccess,
+      message: AuthMessages.AuthenticatedSuccess,
     };
   }
 

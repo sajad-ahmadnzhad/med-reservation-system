@@ -1,7 +1,7 @@
 export interface SignupUser {
   accessToken: string;
   refreshToken: string;
-  success: string;
+  message: string;
 }
 
 export interface SigninUser extends SignupUser {}
@@ -11,7 +11,7 @@ export interface RefreshToken
   newAccessToken: string;
 }
 
-export interface GenerateTokens extends Omit<SignupUser, "success"> {}
+export interface GenerateTokens extends Omit<SignupUser, "message"> {}
 
 export interface GoogleOAuthUser {
   name: string;

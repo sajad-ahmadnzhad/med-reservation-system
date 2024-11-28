@@ -15,7 +15,7 @@ import { SignoutUserArgs } from "./args/signout-user.args";
 
 @Resolver(() => User)
 export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Query(() => User)
   findAll() {
