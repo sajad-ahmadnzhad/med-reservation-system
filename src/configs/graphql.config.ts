@@ -4,8 +4,8 @@ import {ApolloServerPluginLandingPageLocalDefault} from '@apollo/server/plugin/l
 export default (): ApolloDriverConfig => {
   return {
     driver: ApolloDriver,
-    playground: false,
+    playground: true,
     autoSchemaFile: "src/schema.gql",
-    plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    // plugins: [ApolloServerPluginLandingPageLocalDefault({})],
   };
 };
