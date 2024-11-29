@@ -47,7 +47,7 @@ export class AuthService {
     private readonly tokenRepository: Repository<Token>,
     @Inject(forwardRef(() => MailerService))
     private readonly mailerService: MailerService
-  ) {}
+  ) { }
 
   findAll() {
     return [];
@@ -223,7 +223,7 @@ export class AuthService {
     return { message: AuthMessages.SignoutSuccess };
   }
 
-  async forgotPassword({ email }: ForgotPasswordArgs) {
+  async forgotPassword({ email }: ForgotPasswordArgs): Promise<{ message: string }> {
     const existingUser = await this.userRepository.findByEmail(email);
 
     if (!existingUser) {
@@ -251,6 +251,7 @@ export class AuthService {
 
     const mailOptions = {
       from: process.env.GMAIL_USER,
+      to: email,
       subject: "reset your password",
       html: `<p>Link to reset your password:</p>
         <h1>Click on the link below to reset your password</h1>
@@ -264,14 +265,13 @@ export class AuthService {
         await this.tokenRepository.save(token);
       } catch (error) {
         await this.tokenRepository.delete({ id: token.id });
-        throw new InternalServerErrorException(error.message);
       }
     });
 
-    return AuthMessages.SendedResetPassword;
+    return { message: AuthMessages.SendedResetPassword };
   }
 
-  async resetPassword(dto: ResetPasswordArgs, userId: number, token: string) {
+  async resetPassword({ password }: ResetPasswordArgs, userId: number, token: string): Promise<{ message: string }> {
     await this.deleteExpiredTokens();
 
     const existingToken = await this.tokenRepository.findOneBy({ token });
@@ -280,7 +280,7 @@ export class AuthService {
       throw new NotFoundException(AuthMessages.NotFoundToken);
     }
 
-    const hashPassword = this.hashPassword(dto.password, 12);
+    const hashPassword = this.hashPassword(password, 12);
 
     await this.userRepository.update(
       { id: userId },
@@ -288,6 +288,6 @@ export class AuthService {
     );
 
     await this.tokenRepository.delete({ token });
-    return AuthMessages.ResetPasswordSuccess;
+    return { message: AuthMessages.ResetPasswordSuccess };
   }
 }

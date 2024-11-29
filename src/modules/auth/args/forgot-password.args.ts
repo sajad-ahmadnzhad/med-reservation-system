@@ -1,8 +1,10 @@
+import { Field, InputType } from "@nestjs/graphql";
 import { IsEmail, IsNotEmpty } from "class-validator";
 
+@InputType()
 export class ForgotPasswordArgs {
   @IsNotEmpty()
   @IsEmail()
-  @ApiProperty({ format: "gmail", type: "string", required: true })
+  @Field()
   email: string;
 }

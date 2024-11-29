@@ -2,16 +2,14 @@ import { Resolver, Mutation, Args, Query } from "@nestjs/graphql";
 import { AuthService } from "./auth.service";
 import { User } from "./entities/user.entity";
 import { SignupUserArgs } from "./args/signup-user.args";
-import { SignupUserSchema } from "./schema/signup-user.schema";
-import { SigninUserSchema } from "./schema/signin-user.schema";
 import {
   SigninUserByPhoneArgs,
   SigninUserByEmailArgs,
 } from "./args/signin-user.args";
 import { RefreshTokenArgs } from "./args/refresh-token.args";
-import { RefreshTokenSchema } from "./schema/refresh-token.schema";
-import { SignoutUserSchema } from "./schema/signout-user.schema";
 import { SignoutUserArgs } from "./args/signout-user.args";
+import { SignupUserSchema, SigninUserSchema, RefreshTokenSchema, SignoutUserSchema, ForgotPasswordSchema } from "./auth.schema";
+import { ForgotPasswordArgs } from "./args/forgot-password.args";
 
 @Resolver(() => User)
 export class AuthResolver {
@@ -45,5 +43,10 @@ export class AuthResolver {
   @Mutation(() => SignoutUserSchema)
   signout(@Args("signoutInput") signoutInput: SignoutUserArgs) {
     return this.authService.signout(signoutInput);
+  }
+
+  @Mutation(() => ForgotPasswordSchema)
+  forgotPassword(@Args('forgotPasswordInput') forgotPasswordInput: ForgotPasswordArgs) {
+    return this.authService.forgotPassword(forgotPasswordInput)
   }
 }

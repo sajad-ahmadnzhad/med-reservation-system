@@ -6,18 +6,18 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-export class BaseEntity {
+export abstract class BaseEntity {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
 
-  @Column({ type: "time", default: () => "CURRENT_TIMESTAMP" })
+  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
   @Field()
   createdAt: Date;
-
-  @Column({ type: "time", default: () => "CURRENT_TIMESTAMP" })
+  
+  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
   @Field()
-  updatedAt: Date;
+  updatedAt: Date;  
 
   @BeforeInsert()
   setCreatedAt() {
