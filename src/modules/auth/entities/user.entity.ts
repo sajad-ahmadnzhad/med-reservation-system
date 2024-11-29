@@ -1,6 +1,7 @@
 import { ObjectType, Field } from "@nestjs/graphql";
 import { BaseEntity } from "../../../common/abstracts/base.entity";
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
+import { Clinic } from "src/modules/clinic/entities/clinic.entity";
 
 @ObjectType()
 @Entity({ name: "users" })
@@ -36,4 +37,7 @@ export class User extends BaseEntity {
 
   @Column({ type: "varchar", nullable: true })
   token: string;
+
+  @OneToMany(() => Clinic, clinic => clinic.owner)
+  clinics: Clinic[]
 }

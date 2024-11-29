@@ -1,12 +1,18 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseEntity } from '../../../common/abstracts/base.entity';
-import { Column } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { User } from '../../../modules/auth/entities/user.entity';
 
 @ObjectType()
+@Entity({ name: "clinics" })
 export class Clinic extends BaseEntity {
   @Field(() => String)
   @Column({ type: "varchar", nullable: false, length: 500 })
   name: string
+
+  @ManyToOne(() => User, user => user.clinics)
+  @JoinColumn()
+  owner: User
 
   @Field(() => String)
   @Column({ type: "text", nullable: true })
