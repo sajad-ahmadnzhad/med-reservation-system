@@ -3,6 +3,7 @@ namespace NodeJS {
     //* Application
     PORT: string;
     ALLOWED_ORIGINS: string;
+    BASE_URL: string;
 
     //* Jwt configs
     ACCESS_TOKEN_SECRET: string;

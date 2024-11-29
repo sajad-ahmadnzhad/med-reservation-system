@@ -27,6 +27,9 @@ export default (): ConfigModuleOptions => {
         REFRESH_TOKEN_SECRET: Joi.string().required(),
         ACCESS_TOKEN_EXPIRE_TIME: Joi.string().required(),
         REFRESH_TOKEN_EXPIRE_TIME: Joi.string().required(),
+        BASE_URL: Joi.string().required(),
+        GMAIL_PASS: Joi.string().required(),
+        GMAIL_USER: Joi.string().required()
       }).unknown(true);
 
       const { error, value } = schema.validate(config);
