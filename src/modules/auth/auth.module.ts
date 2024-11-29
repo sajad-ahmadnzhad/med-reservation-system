@@ -9,10 +9,11 @@ import { AuthController } from "./auth.controller";
 import { UserRepository } from "./auth.repository";
 import { MailModule } from "../mail/mail.module";
 import { Token } from "./entities/token.entity";
+import { Clinic } from "../clinic/entities/clinic.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Token]),
+    TypeOrmModule.forFeature([User, Token, Clinic]),
     JwtModule.register({ global: true }),
     MailModule,
   ],
